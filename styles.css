@@ -4,6 +4,16 @@ body{
     align-items: center;
 }
 
+.user-interface{
+    display: flex;
+    flex-direction: row;
+}
+
+.color-choices{
+    background-color: aquamarine;
+    width: '300px';
+}
+
 h1{
     text-align: center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
