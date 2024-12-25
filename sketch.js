@@ -1,10 +1,25 @@
 let margin = 3;
 let num_squares = 16;
 const canvas = document.querySelector(".canvas");
-let opacity = 0.1;
-let darkenIncrement = 0.2;
 
-function buildboard(square_width){
+function removeCanvas(){
+    let canvasContainer = document.querySelector("body");
+    canvasContainer.removeChild(canvas);
+}
+
+function darkenSquare(pixel, darkenIncrement){
+    let currentOpacity = parseFloat(pixel.getAttribute("opacity"));
+    console.log(currentOpacity);
+    if((currentOpacity + darkenIncrement) <= 1){
+        let newOpacity = Math.round((currentOpacity + darkenIncrement) * 10) / 10;
+        pixel.style.backgroundColor = "grey";
+        pixel.style.opacity = newOpacity;
+        pixel.setAttribute("opacity", newOpacity);
+        console.log(pixel.getAttribute("opacity"));
+    }
+}
+
+function buildCanvas(square_width){
     canvas_width = (square_width + margin * 2) * num_squares
     canvas.style.width = `${canvas_width}px`;
     //console.log(canvas.style.width);
@@ -16,16 +31,10 @@ function buildboard(square_width){
             pixel.style.margin = `${margin}px`;
             pixel.style.backgroundColor = "white";
             //sets custom html element property called opacity
-            pixel.dataset.opacity = 0;
+            pixel.setAttribute("opacity", 0);
 
             pixel.addEventListener('mouseenter', () => {
-                if(parseFloat(pixel.dataset.opacity) + darkenIncrement <= 1){
-                    pixel.dataset.opacity = parseFloat(pixel.dataset.opacity) + darkenIncrement;
-                    pixel.dataset.opacity = Math.round((pixel.dataset.opacity) * 10) / 10;
-                    pixel.style.backgroundColor = "grey";
-                    console.log(pixel.dataset.opacity)
-                    pixel.style.opacity = parseFloat(pixel.dataset.opacity);
-                }
+                darkenSquare(pixel, 0.2);
             });
 
             canvas.appendChild(pixel);
@@ -33,4 +42,5 @@ function buildboard(square_width){
     }
 }
 
-buildboard(30);
+buildCanvas(30);
+//removeCanvas();
