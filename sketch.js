@@ -1,12 +1,18 @@
-const canvas = document.querySelector(".canvas");
+const canvasContainer = document.querySelector(".user-interface");
+const colorChoices = document.querySelector(".color-choices");
+const resize = document.querySelector(".resize");
 
-//properties of each individual square
-let margin = 1;
-let num_squares = 16;
+//margins will change actual width to 512px upon rendering
+const canvas_width = 480;
 
-function removeCanvas(){
-    let canvasContainer = document.querySelector("body");
+function removeCanvas(canvas){
     canvasContainer.removeChild(canvas);
+}
+
+function resizeCanvas(canvas, num_squares){
+    let square_width = canvas_width / (num_squares);
+    removeCanvas(canvas);
+    buildCanvas(square_width, num_squares);
 }
 
 function darkenSquare(pixel, darkenIncrement){
@@ -27,10 +33,14 @@ function darkenSquare(pixel, darkenIncrement){
     }
 }
 
-function buildCanvas(square_width){
+function buildCanvas(square_width, num_squares){
     //there is margin width created on either side of the canvas
-    canvas_width = (square_width + margin * 2) * num_squares
-    canvas.style.width = `${canvas_width}px`;
+    const newCanvas = document.createElement("div");
+    newCanvas.className = "canvas";
+    let margin = 16/num_squares;
+    //each square will have an addition width of margin size on both the left and right of the square
+    let new_canvas_width = (square_width + (margin * 2)) * num_squares
+    newCanvas.style.width = `${new_canvas_width}px`;
 
     //row, column use of nested loops
     for(let i = 0; i < num_squares; i++){
@@ -48,10 +58,20 @@ function buildCanvas(square_width){
                 darkenSquare(pixel, 0.2);
             });
 
-            canvas.appendChild(pixel);
+            newCanvas.appendChild(pixel);
         }
     }
+
+    canvasContainer.insertBefore(newCanvas, colorChoices);
 }
 
-buildCanvas(30);
-//removeCanvas();
+resize.addEventListener("click", () => {
+    let num_squares = prompt("How many squares do you want on each side?");
+    num_squares = parseFloat(num_squares);
+    const canvas = document.querySelector(".canvas");
+    resizeCanvas(canvas, num_squares);
+});
+
+let initialSquareWidth = canvas_width/16;
+buildCanvas(initialSquareWidth, 16);
+

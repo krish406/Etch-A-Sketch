@@ -7,11 +7,22 @@ body{
 .user-interface{
     display: flex;
     flex-direction: row;
+    gap: 10px;
 }
 
 .color-choices{
-    background-color: aquamarine;
-    width: '300px';
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px;
+    background-color: lightsteelblue;
+    /* width: '300px'; */
+}
+
+.resize{
+    background-color: whitesmoke;
+    border-style: none;
+    padding: 10px;
 }
 
 h1{
