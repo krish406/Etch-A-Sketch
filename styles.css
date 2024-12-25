@@ -16,10 +16,11 @@ body{
     justify-content: flex-end;
     padding: 10px;
     background-color: lightsteelblue;
-    /* width: '300px'; */
+    gap: 10px;
+    width: 180px;
 }
 
-.resize{
+.resize, .randomize{
     background-color: whitesmoke;
     border-style: none;
     padding: 10px;
