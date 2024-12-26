@@ -2,8 +2,11 @@ const canvasContainer = document.querySelector(".user-interface");
 const colorChoices = document.querySelector(".color-choices");
 const resize = document.querySelector(".resize");
 
+const max_color = 255;
+
 //margins will change actual width to 512px upon rendering
 const canvas_width = 480;
+let currentColor = "grey";
 
 function removeCanvas(canvas){
     canvasContainer.removeChild(canvas);
@@ -15,19 +18,26 @@ function resizeCanvas(canvas, num_squares){
     buildCanvas(square_width, num_squares);
 }
 
+function generateRandomColor(){
+    //used stack overlow
+    //essentially a string concatenation of # character and a random number below 16777216 (which is 0xFFFFFF in hex)
+    //" | 0" is used to turn the random number into an integer via bitwise OR. toString does decimal to hex conversion 
+    //padStart ensures that the final string number is at least 6 characters
+    let newColor = "#" + (0xFFFFFF * Math.random() | 0).toString(16).padStart(6, "0");
+    return newColor;
+}
+
 function darkenSquare(pixel, darkenIncrement){
     //each pixel has an opacity property created when it was built through the setAttribute method
     //this will just store a string, so its copy needs to be converted to a float
     let currentOpacity = parseFloat(pixel.getAttribute("opacity"));
-    
+
     //code onle runs while it is possible to darken the square
     if((currentOpacity + darkenIncrement) <= 1){
         //adds the darken to the opacity and applies operation to fix javascript addition error
         let newOpacity = Math.round((currentOpacity + darkenIncrement) * 10) / 10;
-        
-        pixel.style.backgroundColor = "grey";
         pixel.style.opacity = newOpacity;
-
+    
         //change the property of the pixel to reflect its new opacity
         pixel.setAttribute("opacity", newOpacity);
     }
@@ -55,6 +65,7 @@ function buildCanvas(square_width, num_squares){
             pixel.setAttribute("opacity", 0);
 
             pixel.addEventListener('mouseenter', () => {
+                pixel.style.backgroundColor = generateRandomColor();
                 darkenSquare(pixel, 0.2);
             });
 
@@ -74,4 +85,3 @@ resize.addEventListener("click", () => {
 
 let initialSquareWidth = canvas_width/16;
 buildCanvas(initialSquareWidth, 16);
-
