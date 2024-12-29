@@ -99,6 +99,7 @@ resize.addEventListener("click", () => {
         }
         message = "How many squares do you want on each side?\nRange (1 < 50)\nPlease enter an integer within the range";
     }
+    
     while(valid_input === false);
 
     const canvas = document.querySelector(".canvas");
