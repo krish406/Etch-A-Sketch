@@ -65,7 +65,8 @@ function buildCanvas(square_width, num_squares){
             pixel.setAttribute("opacity", 0);
 
             pixel.addEventListener('mouseenter', () => {
-                pixel.style.backgroundColor = generateRandomColor();
+                //change background color to current color to revert to previous behaviour
+                pixel.style.backgroundColor = currentColor;
                 darkenSquare(pixel, 0.2);
             });
 
@@ -77,8 +78,29 @@ function buildCanvas(square_width, num_squares){
 }
 
 resize.addEventListener("click", () => {
-    let num_squares = prompt("How many squares do you want on each side?");
-    num_squares = parseFloat(num_squares);
+    let message = "How many squares do you want on each side?\nRange (1 < 50)"
+    let valid_input = false;
+    let num_squares;
+
+    do{
+        num_squares = prompt(message);
+        
+        if(num_squares == null){
+            return;
+        }
+
+        num_squares = Number(num_squares);
+    
+        if(Number.isInteger(num_squares) === true){
+            if(num_squares <= 50 && num_squares >= 1){
+                valid_input = true;
+                break;
+            }
+        }
+        message = "How many squares do you want on each side?\nRange (1 < 50)\nPlease enter an integer within the range";
+    }
+    while(valid_input === false);
+
     const canvas = document.querySelector(".canvas");
     resizeCanvas(canvas, num_squares);
 });
