@@ -13,17 +13,27 @@ body{
 .color-choices{
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     padding: 10px;
     background-color: lightsteelblue;
     gap: 10px;
     width: 180px;
 }
 
-.resize, .randomize{
+.resize, .randomize, .paint-brush, .pencil-brush, .hover{
     background-color: whitesmoke;
     border-style: none;
     padding: 10px;
+}
+
+.brushes, .utilities{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.utilities{
+    /* this will push the elements in this class to the bottom */
+    margin-top: auto;
 }
 
 h1{

@@ -1,12 +1,15 @@
 const canvasContainer = document.querySelector(".user-interface");
 const colorChoices = document.querySelector(".color-choices");
 const resize = document.querySelector(".resize");
+const randomize = document.querySelector(".randomize");
 
 const max_color = 255;
 
 //margins will change actual width to 512px upon rendering
 const canvas_width = 480;
+const brushes = ["hover", "pencil", "paint"];
 let currentColor = "grey";
+let currentBrush = brushes[0];
 
 function removeCanvas(canvas){
     canvasContainer.removeChild(canvas);
@@ -64,10 +67,17 @@ function buildCanvas(square_width, num_squares){
             //sets custom html element property called opacity
             pixel.setAttribute("opacity", 0);
 
-            pixel.addEventListener('mouseenter', () => {
-                //change background color to current color to revert to previous behaviour
-                pixel.style.backgroundColor = currentColor;
-                darkenSquare(pixel, 0.2);
+            pixel.addEventListener('mouseenter', function (event) {
+                if(currentBrush == brushes[0]){
+                    pixel.style.backgroundColor = currentColor;
+                    darkenSquare(pixel, 0.2);
+                }
+
+                else if(currentBrush == brushes[1]){
+                    pixel.style.backgroundColor = generateRandomColor();
+                    pixel.style.opacity = 1;
+                }
+
             });
 
             newCanvas.appendChild(pixel);
@@ -99,11 +109,22 @@ resize.addEventListener("click", () => {
         }
         message = "How many squares do you want on each side?\nRange (1 < 50)\nPlease enter an integer within the range";
     }
-    
+
     while(valid_input === false);
 
     const canvas = document.querySelector(".canvas");
     resizeCanvas(canvas, num_squares);
+});
+
+randomize.addEventListener("click", () => {
+    
+    if(currentBrush == brushes[0]){
+        currentBrush = brushes[1];
+    }
+
+    else if(currentBrush == brushes[1]){
+        currentBrush = brushes[0];
+    }
 });
 
 let initialSquareWidth = canvas_width/16;
