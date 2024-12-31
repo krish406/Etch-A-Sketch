@@ -1,15 +1,25 @@
 const canvasContainer = document.querySelector(".user-interface");
 const colorChoices = document.querySelector(".color-choices");
-const resize = document.querySelector(".resize");
-const randomize = document.querySelector(".randomize");
+const brushList = document.querySelectorAll(".brushes > button");
+const utilitiesList = document.querySelectorAll(".utilities > button");
 
-const max_color = 255;
+const hoverBtn = brushList[0];
+const pencilBtn = brushList[1];
+const paintbrushBtn = brushList[2];
+
+const normalizeBtn = utilitiesList[0];
+const randomizeBtn = utilitiesList[1];
+const resizeBtn = utilitiesList[2];
 
 //margins will change actual width to 512px upon rendering
 const canvas_width = 480;
+//might add hard and soft erasers in the futures
 const brushes = ["hover", "pencil", "paint"];
+const modes = ["normal", "random"];
+
 let currentColor = "grey";
-let currentBrush = brushes[0];
+let currentMode = modes[0];
+let currentBrush = brushes[0]; 
 
 function removeCanvas(canvas){
     canvasContainer.removeChild(canvas);
@@ -22,7 +32,7 @@ function resizeCanvas(canvas, num_squares){
 }
 
 function generateRandomColor(){
-    //used stack overlow
+    //used stack overflow
     //essentially a string concatenation of # character and a random number below 16777216 (which is 0xFFFFFF in hex)
     //" | 0" is used to turn the random number into an integer via bitwise OR. toString does decimal to hex conversion 
     //padStart ensures that the final string number is at least 6 characters
@@ -35,7 +45,7 @@ function darkenSquare(pixel, darkenIncrement){
     //this will just store a string, so its copy needs to be converted to a float
     let currentOpacity = parseFloat(pixel.getAttribute("opacity"));
 
-    //code onle runs while it is possible to darken the square
+    //code only runs while it is possible to darken the square
     if((currentOpacity + darkenIncrement) <= 1){
         //adds the darken to the opacity and applies operation to fix javascript addition error
         let newOpacity = Math.round((currentOpacity + darkenIncrement) * 10) / 10;
@@ -67,17 +77,38 @@ function buildCanvas(square_width, num_squares){
             //sets custom html element property called opacity
             pixel.setAttribute("opacity", 0);
 
-            pixel.addEventListener('mouseenter', function (event) {
+            pixel.addEventListener('mouseenter', () => {
+
                 if(currentBrush == brushes[0]){
-                    pixel.style.backgroundColor = currentColor;
-                    darkenSquare(pixel, 0.2);
+                    return;
                 }
 
-                else if(currentBrush == brushes[1]){
-                    pixel.style.backgroundColor = generateRandomColor();
-                    pixel.style.opacity = 1;
+                if(currentMode == modes[0]){
+                    if(currentBrush == brushes[1]){
+                        pixel.style.backgroundColor = currentColor;
+                        darkenSquare(pixel, 0.2);
+                    }
+
+                    else if(currentBrush == brushes[2]){
+                        pixel.style.backgroundColor = currentColor;
+                        pixel.setAttribute("opacity", 1);
+                        pixel.style.opacity = 1;
+                    }
                 }
 
+                else if(currentMode == modes[1]){
+                    if(currentBrush == brushes[1]){
+                        pixel.style.backgroundColor = generateRandomColor();
+                        darkenSquare(pixel, 0.2);
+                    }
+
+                    else if(currentBrush == brushes[2]){
+                        pixel.style.backgroundColor = generateRandomColor();
+                        pixel.setAttribute("opacity", 1);
+                        pixel.style.opacity = 1;
+                    }
+                }
+                
             });
 
             newCanvas.appendChild(pixel);
@@ -87,7 +118,19 @@ function buildCanvas(square_width, num_squares){
     canvasContainer.insertBefore(newCanvas, colorChoices);
 }
 
-resize.addEventListener("click", () => {
+hoverBtn.addEventListener('click', () => {
+    currentBrush = brushes[0];
+});
+
+pencilBtn.addEventListener('click', () => {
+    currentBrush = brushes[1];
+});
+
+paintbrushBtn.addEventListener('click', () => {
+    currentBrush = brushes[2];
+});
+
+resizeBtn.addEventListener("click", () => {
     let message = "How many squares do you want on each side?\nRange (1 < 50)"
     let valid_input = false;
     let num_squares;
@@ -116,15 +159,12 @@ resize.addEventListener("click", () => {
     resizeCanvas(canvas, num_squares);
 });
 
-randomize.addEventListener("click", () => {
-    
-    if(currentBrush == brushes[0]){
-        currentBrush = brushes[1];
-    }
+normalizeBtn.addEventListener("click", () => {
+    currentMode = modes[0]
+});
 
-    else if(currentBrush == brushes[1]){
-        currentBrush = brushes[0];
-    }
+randomizeBtn.addEventListener("click", () => {
+    currentMode = modes[1];
 });
 
 let initialSquareWidth = canvas_width/16;
