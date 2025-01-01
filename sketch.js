@@ -179,6 +179,35 @@ randomizeBtn.addEventListener("click", (event) => {
     colorModes(event.target);
 });
 
+document.addEventListener("keydown", (event) => {
+
+    switch (event.key){
+        case "h":
+            currentBrush = brushes[0];
+            colorBrushButtons(hoverBtn);
+            break;
+
+        case "d":
+            currentBrush = brushes[1];
+            colorBrushButtons(pencilBtn);
+            break;
+
+        case "p":
+            currentBrush = brushes[2];
+            colorBrushButtons(paintbrushBtn);
+            break;
+
+        case "n":
+            currentMode = modes[0];
+            colorModes(normalizeBtn);
+            break;
+
+        case "r":
+            currentMode = modes[1];
+            colorModes(randomizeBtn);
+            break;
+    }
+});
 
 function colorBrushButtons(target){
 
