@@ -19,7 +19,7 @@ body{
     width: 180px;
 }
 
-.resize, .randomize, .paint-brush, .pencil-brush, .hover, .normalize{
+button{
     background-color: whitesmoke;
     border-style: none;
     padding: 10px;

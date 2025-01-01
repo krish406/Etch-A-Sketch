@@ -21,6 +21,12 @@ let currentColor = "grey";
 let currentMode = modes[0];
 let currentBrush = brushes[0]; 
 
+//default brush and mode settings
+document.addEventListener("DOMContentLoaded", () => {
+    hoverBtn.style.backgroundColor = "Gainsboro";
+    normalizeBtn.style.backgroundColor = "Gainsboro";
+});
+
 function removeCanvas(canvas){
     canvasContainer.removeChild(canvas);
 }
@@ -79,6 +85,7 @@ function buildCanvas(square_width, num_squares){
 
             pixel.addEventListener('mouseenter', () => {
 
+                //hover button, don't color any squares
                 if(currentBrush == brushes[0]){
                     return;
                 }
@@ -118,16 +125,19 @@ function buildCanvas(square_width, num_squares){
     canvasContainer.insertBefore(newCanvas, colorChoices);
 }
 
-hoverBtn.addEventListener('click', () => {
+hoverBtn.addEventListener('click', (event) => {
     currentBrush = brushes[0];
+    colorBrushButtons(event.target);
 });
 
-pencilBtn.addEventListener('click', () => {
+pencilBtn.addEventListener('click', (event) => {
     currentBrush = brushes[1];
+    colorBrushButtons(event.target);
 });
 
-paintbrushBtn.addEventListener('click', () => {
+paintbrushBtn.addEventListener('click', (event) => {
     currentBrush = brushes[2];
+    colorBrushButtons(event.target);
 });
 
 resizeBtn.addEventListener("click", () => {
@@ -159,13 +169,48 @@ resizeBtn.addEventListener("click", () => {
     resizeCanvas(canvas, num_squares);
 });
 
-normalizeBtn.addEventListener("click", () => {
-    currentMode = modes[0]
+normalizeBtn.addEventListener("click", (event) => {
+    currentMode = modes[0];
+    colorModes(event.target);
 });
 
-randomizeBtn.addEventListener("click", () => {
+randomizeBtn.addEventListener("click", (event) => {
     currentMode = modes[1];
+    colorModes(event.target);
 });
 
+
+function colorBrushButtons(target){
+
+    //every time a button is pressed, all buttons are set to whitesmoke so that only the newly pressed button will be dark grey
+    //this prevents multiple buttons from being grey at the same time
+    brushList.forEach((element) => element.style.backgroundColor = "whitesmoke");
+
+    if(currentBrush == brushes[0]){
+        target.style.backgroundColor = "Gainsboro";
+    }
+
+    else if(currentBrush == brushes[1]){
+        target.style.backgroundColor = "Gainsboro";
+    }
+
+    else if(currentBrush == brushes[2]){
+        target.style.backgroundColor = "Gainsboro";
+    }
+}
+
+//function to color the backgrounds of the mode buttons upon click
+function colorModes(target){
+    utilitiesList.forEach((element) => element.style.backgroundColor = "whitesmoke");
+
+    if(currentMode == modes[0]){
+        target.style.backgroundColor = "Gainsboro";
+    }
+
+    else if(currentMode == modes[1]){
+        target.style.backgroundColor = "Gainsboro";
+    }
+}
+  
 let initialSquareWidth = canvas_width/16;
 buildCanvas(initialSquareWidth, 16);
