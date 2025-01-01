@@ -10,7 +10,7 @@ body{
     gap: 10px;
 }
 
-.color-choices{
+.menu-choices{
     display: flex;
     flex-direction: column;
     padding: 10px;
