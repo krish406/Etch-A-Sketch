@@ -128,6 +128,7 @@ function buildCanvas(square_width, num_squares){
                     return;
                 }
 
+                //the mode determines whether the brush applies random color or selected color
                 if(currentMode == modes[0]){
                     if(currentBrush == brushes[1]){
                         pixel.style.backgroundColor = currentColor;
@@ -154,6 +155,7 @@ function buildCanvas(square_width, num_squares){
                     }
                 }
 
+                //eraser brushes
                 if(currentBrush == brushes[3]){
                     lightenSquare(pixel, 0.2);
                 }
@@ -171,6 +173,7 @@ function buildCanvas(square_width, num_squares){
     canvasContainer.insertBefore(newCanvas, menuChoices);
 }
 
+//event listeners to color buttons after being clicked
 hoverBtn.addEventListener('click', (event) => {
     currentBrush = brushes[0];
     colorBrushButtons(event.target);
@@ -196,6 +199,7 @@ hardEraserBtn.addEventListener('click', (event) => {
     colorBrushButtons(event.target);
 })
 
+//allows the user to resize the canvas through a prompt
 resizeBtn.addEventListener("click", () => {
     let message = "How many squares do you want on each side?\nRange: [1, 50]"
     let valid_input = false;
@@ -204,18 +208,23 @@ resizeBtn.addEventListener("click", () => {
     do{
         num_squares = prompt(message);
         
+        //to handle if the user cancels the prompt
         if(num_squares == null){
             return;
         }
 
+        //type conversion to number
         num_squares = Number(num_squares);
     
         if(Number.isInteger(num_squares) === true){
+            //note that 1 <= num_squares <= 50 will not work because of how javascript handles chaining
             if(num_squares <= 50 && num_squares >= 1){
                 valid_input = true;
                 break;
             }
         }
+
+        //changes the message if the first input is invalid
         message = "How many squares do you want on each side?\nRange: [1, 50]\nPlease enter an integer within the range";
     }
 
@@ -225,6 +234,7 @@ resizeBtn.addEventListener("click", () => {
     resizeCanvas(canvas, num_squares);
 });
 
+//to color modes if they are clicked
 normalizeBtn.addEventListener("click", (event) => {
     currentMode = modes[0];
     colorModes(event.target);
@@ -235,6 +245,7 @@ randomizeBtn.addEventListener("click", (event) => {
     colorModes(event.target);
 });
 
+//keyboard shortcuts used to switch between modes while drawing
 document.addEventListener("keydown", (event) => {
 
     switch (event.key){
@@ -291,6 +302,8 @@ function colorModes(target){
     target.style.backgroundColor = "Gainsboro";
 }
 
+//the html elements store the color inputs which are then assigned to current color
+//this happens when the inputs are clicked or when the values they store change due to user modification
 colorChoiceList.forEach((element) => element.addEventListener('change', (event) => {
     currentColor = event.target.value;
 }, false));
