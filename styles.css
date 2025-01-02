@@ -8,6 +8,7 @@ body{
     display: flex;
     flex-direction: row;
     gap: 10px;
+    margin-bottom: 10px;
 }
 
 .menu-choices{
@@ -47,3 +48,22 @@ h1{
     flex-wrap: wrap;
     background-color: lightgray;
 }
+
+.bottom{
+    display: flex;
+    flex-direction: row;
+    width: 702px;
+    background-color: #bab7d7;
+    padding: 10px;
+}
+
+.color-choices{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.change-back{
+    margin-left: auto;
+}
+

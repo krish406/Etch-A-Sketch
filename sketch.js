@@ -2,6 +2,7 @@ const canvasContainer = document.querySelector(".user-interface");
 const menuChoices = document.querySelector(".menu-choices");
 const brushList = document.querySelectorAll(".brushes > button");
 const utilitiesList = document.querySelectorAll(".utilities > button");
+const colorChoiceList = document.querySelectorAll(".color-choices > input");
 
 const hoverBtn = brushList[0];
 const pencilBtn = brushList[1];
@@ -16,7 +17,7 @@ const resizeBtn = utilitiesList[2];
 //margins will change actual width to 512px upon rendering
 const canvas_width = 480;
 //might add hard and soft erasers in the futures
-const brushes = ["hover", "pencil", "paint", "eraser"];
+const brushes = ["hover", "pencil", "paint", "eraser", "hard-eraser"];
 const modes = ["normal", "random"];
 
 let pageColor = "white";
@@ -25,10 +26,8 @@ let currentMode = modes[0];
 let currentBrush = brushes[0]; 
 
 //default brush and mode settings
-document.addEventListener("DOMContentLoaded", () => {
-    hoverBtn.style.backgroundColor = "Gainsboro";
-    normalizeBtn.style.backgroundColor = "Gainsboro";
-});
+hoverBtn.style.backgroundColor = "Gainsboro";
+normalizeBtn.style.backgroundColor = "Gainsboro";
 
 function removeCanvas(canvas){
     canvasContainer.removeChild(canvas);
@@ -38,6 +37,10 @@ function resizeCanvas(canvas, num_squares){
     let square_width = canvas_width / (num_squares);
     removeCanvas(canvas);
     buildCanvas(square_width, num_squares);
+    window.document.dispatchEvent(new Event("DOMContentLoaded", {
+        bubbles: true,
+        cancelable: true
+    }));
 }
 
 function generateRandomColor(){
@@ -69,7 +72,6 @@ function lightenSquare(pixel, lightenIncrement){
     //each pixel has an opacity property created when it was built through the setAttribute method
     //this will just store a string, so its copy needs to be converted to a float
     let currentOpacity = parseFloat(pixel.getAttribute("opacity"));
-    console.log(currentOpacity);
 
     //don't erase a square that has not been modified
     if(currentOpacity == 0){
@@ -88,7 +90,6 @@ function lightenSquare(pixel, lightenIncrement){
 
     //this is an unfortunate consequence of not understanding how opacity works
     else if((currentOpacity - lightenIncrement) <= 0){
-        console.log("this entered")
         pixel.style.backgroundColor = pageColor;
         pixel.style.opacity = 1;
         pixel.setAttribute("opacity", 0);
@@ -132,6 +133,12 @@ function buildCanvas(square_width, num_squares){
                         pixel.style.backgroundColor = currentColor;
                         darkenSquare(pixel, 0.2);
                     }
+
+                    else if(currentBrush == brushes[2]){
+                        pixel.style.backgroundColor = currentColor;
+                        pixel.setAttribute("opacity", 1);
+                        pixel.style.opacity = 1;
+                    }
                 }
 
                 else if(currentMode == modes[1]){
@@ -139,21 +146,22 @@ function buildCanvas(square_width, num_squares){
                         pixel.style.backgroundColor = generateRandomColor();
                         darkenSquare(pixel, 0.2);
                     }
+
+                    else if(currentBrush == brushes[2]){
+                        pixel.style.backgroundColor = generateRandomColor();
+                        pixel.setAttribute("opacity", 1);
+                        pixel.style.opacity = 1;
+                    }
                 }
 
-                if(currentBrush == brushes[2]){
-                    pixel.style.backgroundColor = currentColor;
-                    pixel.setAttribute("opacity", 1);
-                    pixel.style.opacity = 1;
-                }
-
-                else if(currentBrush == brushes[3]){
+                if(currentBrush == brushes[3]){
                     lightenSquare(pixel, 0.2);
                 }
 
-                else if(currentBrush == brushes[4]){
-                    lightenSquare(pixel, 1);
+                if(currentBrush == brushes[4]){
+                    lightenSquare(pixel, 1)
                 }
+                
             });
 
             newCanvas.appendChild(pixel);
@@ -189,7 +197,7 @@ hardEraserBtn.addEventListener('click', (event) => {
 })
 
 resizeBtn.addEventListener("click", () => {
-    let message = "How many squares do you want on each side?\nRange (1 < 50)"
+    let message = "How many squares do you want on each side?\nRange: [1, 50]"
     let valid_input = false;
     let num_squares;
 
@@ -208,7 +216,7 @@ resizeBtn.addEventListener("click", () => {
                 break;
             }
         }
-        message = "How many squares do you want on each side?\nRange (1 < 50)\nPlease enter an integer within the range";
+        message = "How many squares do you want on each side?\nRange: [1, 50]\nPlease enter an integer within the range";
     }
 
     while(valid_input === false);
@@ -282,6 +290,33 @@ function colorModes(target){
 
     target.style.backgroundColor = "Gainsboro";
 }
-  
+
+colorChoiceList.forEach((element) => element.addEventListener('change', (event) => {
+    currentColor = event.target.value;
+}, false));
+
+colorChoiceList.forEach((element) => element.addEventListener('click', (event) => {
+    currentColor = event.target.value;
+}, false));
+
+
 let initialSquareWidth = canvas_width/16;
 buildCanvas(initialSquareWidth, 16);
+
+//----for future background modifications
+
+document.addEventListener('DOMContentLoaded', () => {
+    const changePageBackground = document.querySelector(".change-back > input");
+
+    const allPixels = document.querySelectorAll(".canvas > div");
+
+    changePageBackground.addEventListener('change', (event) => {
+        pageColor = event.target.value;
+        allPixels.forEach((element) => {
+            if(parseFloat(element.getAttribute("opacity")) == 0){
+                element.style.backgroundColor = pageColor;
+            }
+        });
+    });
+
+});

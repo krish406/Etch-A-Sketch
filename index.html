@@ -12,18 +12,31 @@
     <div class = "user-interface">
         <div class = "menu-choices">
             <div class = "brushes">
-                <button class = "hover">Hover</button>
-                <button class = "pencil-brush">Pencil Brush</button>
-                <button class = "paint-brush">Paintbrush</button>
-                <button class = "eraser-light">Light Eraser</button>
-                <button class = "eraser-hard">Hard Eraser</button>
+                <button class = "hover" tabindex="-1">Hover</button>
+                <button class = "pencil-brush" tabindex="-1">Pencil Brush</button>
+                <button class = "paint-brush" tabindex="-1">Paintbrush</button>
+                <button class = "eraser-light" tabindex="-1">Light Eraser</button>
+                <button class = "eraser-hard" tabindex="-1">Hard Eraser</button>
             </div>
             
             <div class = "utilities">
-                <button class = "normalize">Normal Mode</button>
-                <button class = "randomize">Random Color Mode</button>
-                <button class = "resize">Change Resolution</button>
+                <button class = "normalize" tabindex="-1">Normal Mode</button>
+                <button class = "randomize" tabindex="-1">Random Color Mode</button>
+                <button class = "resize" tabindex="-1">Change Resolution</button>
             </div>
+        </div>
+    </div>
+    <div class = "bottom">
+        <div class = "color-choices">
+            <input type = "color" value = "#FFFF00">
+            <input type = "color" value = "#FF0000">
+            <input type = "color" value = "#008000">
+            <input type = "color" value = "#0000FF">
+            <input type = "color" value = "#FFFFFF">
+        </div>
+
+        <div class = "change-back">
+            <input type = "color" value = "#FFFFFF">
         </div>
     </div>
     <script src = "sketch.js"></script>
