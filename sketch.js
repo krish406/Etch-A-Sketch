@@ -7,6 +7,7 @@ const hoverBtn = brushList[0];
 const pencilBtn = brushList[1];
 const paintbrushBtn = brushList[2];
 const lightEraserBtn = brushList[3];
+const hardEraserBtn = brushList[4];
 
 const normalizeBtn = utilitiesList[0];
 const randomizeBtn = utilitiesList[1];
@@ -131,16 +132,6 @@ function buildCanvas(square_width, num_squares){
                         pixel.style.backgroundColor = currentColor;
                         darkenSquare(pixel, 0.2);
                     }
-
-                    else if(currentBrush == brushes[2]){
-                        pixel.style.backgroundColor = currentColor;
-                        pixel.setAttribute("opacity", 1);
-                        pixel.style.opacity = 1;
-                    }
-
-                    else if(currentBrush == brushes[3]){
-                        lightenSquare(pixel, 0.2);
-                    }
                 }
 
                 else if(currentMode == modes[1]){
@@ -148,18 +139,21 @@ function buildCanvas(square_width, num_squares){
                         pixel.style.backgroundColor = generateRandomColor();
                         darkenSquare(pixel, 0.2);
                     }
-
-                    else if(currentBrush == brushes[2]){
-                        pixel.style.backgroundColor = generateRandomColor();
-                        pixel.setAttribute("opacity", 1);
-                        pixel.style.opacity = 1;
-                    }
-
-                    else if(currentBrush == brushes[3]){
-                        lightenSquare(pixel, 0.2);
-                    }
                 }
-                
+
+                if(currentBrush == brushes[2]){
+                    pixel.style.backgroundColor = currentColor;
+                    pixel.setAttribute("opacity", 1);
+                    pixel.style.opacity = 1;
+                }
+
+                else if(currentBrush == brushes[3]){
+                    lightenSquare(pixel, 0.2);
+                }
+
+                else if(currentBrush == brushes[4]){
+                    lightenSquare(pixel, 1);
+                }
             });
 
             newCanvas.appendChild(pixel);
@@ -186,6 +180,11 @@ paintbrushBtn.addEventListener('click', (event) => {
 
 lightEraserBtn.addEventListener('click', (event) => {
     currentBrush = brushes[3];
+    colorBrushButtons(event.target);
+})
+
+hardEraserBtn.addEventListener('click', (event) => {
+    currentBrush = brushes[4];
     colorBrushButtons(event.target);
 })
 
@@ -249,6 +248,11 @@ document.addEventListener("keydown", (event) => {
         case "l":
             currentBrush = brushes[3];
             colorBrushButtons(lightEraserBtn);
+            break;
+
+        case "e":
+            currentBrush = brushes[4];
+            colorBrushButtons(hardEraserBtn);
             break;
 
         case "n":
