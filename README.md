@@ -2,6 +2,8 @@
 This program allows the user to create pixel art. The user can draw with either the pencil or the paintbrush, and remove marks with either eraser. 
 The user can also resize the canvas, change the brush and backround colors and toggle between brushes using keyboard shortcuts
 
+Live Demo at https://krish406.github.io/Etch-A-Sketch/ 
+
 For reference:\
 h - hover\
 r -randomize color mode\
